@@ -150,9 +150,21 @@ export default function ChatroomPage() {
   const [activeChannel, setActiveChannel] = useState("general")
   const [messages, setMessages] = useState<Message[]>(channelMessages.general || [])
 
+  // Show loading state while authentication is being checked
+  if (!isLoaded) {
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  }
+
+  // No need to handle unauthenticated state here - middleware will redirect automatically
+
+  // Use effect hooks before any conditional returns
   useEffect(() => {
     setMessages(channelMessages[activeChannel] || [])
   }, [activeChannel, channelMessages])
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   const handleSendMessage = () => {
     if (message.trim() === "") return
@@ -182,10 +194,6 @@ export default function ChatroomPage() {
       handleSendMessage()
     }
   }
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
 
   return (
     <div className="container py-6">

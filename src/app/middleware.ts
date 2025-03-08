@@ -1,10 +1,10 @@
 import { authMiddleware } from "@clerk/nextjs"
 
 export default authMiddleware({
-  publicRoutes: ["/", "/events", "/events/:id", "/sign-in", "/sign-up"],
+  // Only allow public access to homepage, sign-in, and sign-up pages
+  publicRoutes: ["/", "/sign-in", "/sign-up"],
 })
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }
-

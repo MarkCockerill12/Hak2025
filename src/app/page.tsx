@@ -1,13 +1,8 @@
 import Link from "next/link"
-import { UserButton } from "@clerk/nextjs"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import { CalendarIcon, MessageCircle, Users } from "lucide-react"
-import { auth } from "@clerk/nextjs"
 
-export default async function WelcomePage() {
-  const { userId } = auth()
-  const isSignedIn = !!userId
-
+export default function WelcomePage() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,27 +25,21 @@ export default async function WelcomePage() {
             <Link href="/chatroom" className="text-sm font-medium transition-colors hover:text-primary">
               Community Chat
             </Link>
-            {isSignedIn && (
-              <Link href="/admin" className="text-sm font-medium transition-colors hover:text-primary">
-                Admin
-              </Link>
-            )}
+            <Link href="/admin" className="text-sm font-medium transition-colors hover:text-primary">
+              Admin
+            </Link>
           </nav>
           <div className="flex items-center gap-4">
-            {isSignedIn ? (
-              <UserButton afterSignOutUrl="/" />
-            ) : (
-              <div className="flex gap-2">
-                <Link href="/sign-in">
-                  <Button variant="outline" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link href="/sign-up">
-                  <Button size="sm">Sign Up</Button>
-                </Link>
-              </div>
-            )}
+            <div className="flex gap-2">
+              <Link href="/sign-in">
+                <Button variant="outline" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button size="sm">Sign Up</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
@@ -215,4 +204,3 @@ export default async function WelcomePage() {
     </div>
   )
 }
-
