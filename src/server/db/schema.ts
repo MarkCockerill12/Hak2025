@@ -23,6 +23,7 @@ export const events = createTable(
     id: uuid("id").defaultRandom().primaryKey(),
     name: varchar("name", { length: 256 }).notNull(),
     description: text("description"),
+    category: text("category").notNull(),
     photo: varchar("photo", { length: 512 }),
     startDate: timestamp("start_date", { withTimezone: true }).notNull(),
     endDate: timestamp("end_date", { withTimezone: true }).notNull(),
@@ -79,7 +80,7 @@ export const userEvents = createTable(
 export const chats = createTable(
   "chat",
   {
- 
+
     eventId: uuid("event_id")
       .notNull()
       .references(() => events.id, { onDelete: "cascade" }),

@@ -15,6 +15,13 @@
       "when": 1741451171634,
       "tag": "0001_closed_wasp",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1741469002549,
+      "tag": "0002_lucky_princess_powerful",
+      "breakpoints": true
     }
   ]
 }
