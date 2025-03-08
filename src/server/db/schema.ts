@@ -24,6 +24,7 @@ export const events = createTable(
     name: varchar("name", { length: 256 }).notNull(),
     description: text("description"),
     category: text("category").notNull(),
+    location: text("location").notNull(),
     photo: varchar("photo", { length: 512 }),
     startDate: timestamp("start_date", { withTimezone: true }).notNull(),
     endDate: timestamp("end_date", { withTimezone: true }).notNull(),

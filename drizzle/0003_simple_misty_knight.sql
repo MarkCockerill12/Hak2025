@@ -1,0 +1,1 @@
+ALTER TABLE "hack2025_event" ADD COLUMN "location" text NOT NULL;
