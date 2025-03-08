@@ -60,7 +60,7 @@ export const userEvents = createTable(
   {
     userId: varchar("user_id", { length: 256 })
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => users.id, { onDelete: "set null" }),
     eventId: uuid("event_id")
       .notNull()
       .references(() => events.id, { onDelete: "cascade" }),
