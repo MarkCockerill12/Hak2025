@@ -1,0 +1,1 @@
+ALTER TABLE "hack2025_chat" DROP COLUMN IF EXISTS "id";
