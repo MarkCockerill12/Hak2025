@@ -105,3 +105,9 @@ export const chats = createTable(
     dateTimeIdx: index("chat_datetime_idx").on(table.dateTime),
   })
 );
+
+
+export type Event = InferInsertModel<typeof events>;
+export type User = InferInsertModel<typeof users>;
+export type UserEvent = InferInsertModel<typeof userEvents>;
+export type Chat = InferInsertModel<typeof chats>;
