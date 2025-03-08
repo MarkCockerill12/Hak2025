@@ -1,35 +1,29 @@
 // src/server/db/insert.ts
 import { db } from './index';
-import { events, users, userEvents, chats } from './schema';
-import { type InferInsertModel } from 'drizzle-orm';
+import { type Event, type UserEvent, type User, type Chat, events, users, userEvents, chats } from './schema';
 
-// Define types for inserting data
-export type NewEvent = InferInsertModel<typeof events>;
-export type NewUser = InferInsertModel<typeof users>;
-export type NewUserEvent = InferInsertModel<typeof userEvents>;
-export type NewChat = InferInsertModel<typeof chats>;
 
 // Event-related insertion functions
-export async function createEvent(data: NewEvent) {
+export async function createEvent(data: Event) {
   const result = await db.insert(events).values(data).returning();
   return result[0];
 }
 // User-related insertion functions
-export async function createUser(data: NewUser) {
+export async function createUser(data: User) {
   const result = await db.insert(users).values(data).returning();
   return result[0];
 }
 
 
 // UserEvent (join table) insertion functions
-export async function assignUserToEvent(data: NewUserEvent) {
+export async function assignUserToEvent(data: UserEvent) {
   const result = await db.insert(userEvents).values(data).returning();
   return result[0];
 }
 
 
 // Chat-related insertion functions
-export async function createChat(data: NewChat) {
+export async function createChat(data: Chat) {
   const result = await db.insert(chats).values(data).returning();
   return result[0];
 }

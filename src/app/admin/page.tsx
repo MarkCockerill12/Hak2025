@@ -18,6 +18,7 @@ import { format } from "date-fns"
 import { cn } from "../../lib/utils"
 import Image from "next/image"
 import { Protect } from "@clerk/nextjs"
+import { AddEventDialog } from "./add-event-dialog"
 
 export default function AdminPage() {
   const [date, setDate] = useState<Date>()
@@ -51,10 +52,7 @@ export default function AdminPage() {
                   <CardTitle>Manage Events</CardTitle>
                   <CardDescription>Create, edit, and delete events</CardDescription>
                 </div>
-                <Button className="bg-green-600 hover:bg-green-700">
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Event
-                </Button>
+                <AddEventDialog />
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-4 mb-6">

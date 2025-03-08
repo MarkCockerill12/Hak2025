@@ -2,24 +2,12 @@
 import Link from "next/link"
 import { Button } from "../../components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
-import { CalendarIcon, MessageCircle, Users } from "lucide-react"
+import { CalendarIcon, MapIcon, MessageCircle } from "lucide-react"
 import { Badge } from "../../components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import { searchEvents } from "../../server/db/select"
+import { type Event } from "../../server/db/schema"
 
-// Update the Event interface to match your database schema
-interface Event {
-  startDate: Date;
-  name: string;
-  id: string;
-  description: string | null;
-  category: string;
-  photo: string | null;
-  endDate: Date;
-  volunteerLimit: number | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
 
 export default async function EventsPage() {
   // Fetch all events with volunteer count
@@ -144,6 +132,10 @@ function EventCard({ event }: EventCardProps) {
             <span className="text-sm">
               {formatDateTime(event.startDate, event.endDate)}
             </span>
+          </div>
+          <div className="flex items-center">
+            <MapIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+            <span className="text-sm">{event.location}</span>
           </div>
         </div>
       </CardContent>
