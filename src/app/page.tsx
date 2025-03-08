@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "../components/ui/button"
 import { CalendarIcon, MessageCircle, Users } from "lucide-react"
+import Image from "next/image"
 
 export default function WelcomePage() {
   return (
@@ -65,7 +66,7 @@ export default function WelcomePage() {
                 </div>
               </div>
               <div className="flex justify-center">
-                <img
+                <Image
                   src="/placeholder.svg?height=400&width=600"
                   alt="Children exploring nature"
                   className="rounded-lg object-cover aspect-video overflow-hidden"
@@ -83,7 +84,7 @@ export default function WelcomePage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Our Impact</h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  See how we're making a difference in our community and environment.
+                  See how we&apos;re making a difference in our community and environment.
                 </p>
               </div>
             </div>

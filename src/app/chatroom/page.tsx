@@ -120,9 +120,9 @@ export default function ChatroomPage() {
   const { user, isLoaded } = useUser()
   const [message, setMessage] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  
+
   // Use state for channel messages to ensure persistence and proper updates
-  const [channelMessages, setChannelMessages] = useState<Record<string, Message[]>>({...initialChannelMessages})
+  const [channelMessages, setChannelMessages] = useState<Record<string, Message[]>>({ ...initialChannelMessages })
 
   // Mock channels
   const channels: Channel[] = [
@@ -150,6 +150,14 @@ export default function ChatroomPage() {
   const [activeChannel, setActiveChannel] = useState("general")
   const [messages, setMessages] = useState<Message[]>(channelMessages.general || [])
 
+  useEffect(() => {
+    setMessages(channelMessages[activeChannel] || [])
+  }, [activeChannel, channelMessages])
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
+
   // Show loading state while authentication is being checked
   if (!isLoaded) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
@@ -158,13 +166,6 @@ export default function ChatroomPage() {
   // No need to handle unauthenticated state here - middleware will redirect automatically
 
   // Use effect hooks before any conditional returns
-  useEffect(() => {
-    setMessages(channelMessages[activeChannel] || [])
-  }, [activeChannel, channelMessages])
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
 
   const handleSendMessage = () => {
     if (message.trim() === "") return
@@ -179,11 +180,11 @@ export default function ChatroomPage() {
     }
 
     // Create new array for the current channel messages
-    const updatedChannelMessages = { 
+    const updatedChannelMessages = {
       ...channelMessages,
-      [activeChannel]: [...(channelMessages[activeChannel] || []), newMessage] 
+      [activeChannel]: [...(channelMessages[activeChannel] || []), newMessage]
     }
-    
+
     setChannelMessages(updatedChannelMessages)
     setMessage("")
   }
@@ -247,13 +248,12 @@ export default function ChatroomPage() {
                           <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <span
-                          className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-background ${
-                            user.status === "online"
+                          className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-background ${user.status === "online"
                               ? "bg-green-500"
                               : user.status === "away"
                                 ? "bg-yellow-500"
                                 : "bg-gray-300"
-                          }`}
+                            }`}
                         />
                       </div>
                       <div className="grid gap-0.5">

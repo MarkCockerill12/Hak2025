@@ -16,6 +16,7 @@ import { CalendarIcon, Edit, Plus, Search, Trash2 } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover"
 import { format } from "date-fns"
 import { cn } from "../../lib/utils"
+import Image from "next/image"
 
 export default function AdminPage() {
   const [date, setDate] = useState<Date>()
@@ -390,7 +391,7 @@ export default function AdminPage() {
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
                       <div key={id} className="relative group overflow-hidden rounded-md border">
-                        <img
+                        <Image
                           src={`/placeholder.svg?height=150&width=150&text=Image ${id}`}
                           alt={`Media item ${id}`}
                           className="aspect-square object-cover w-full"
