@@ -4,9 +4,8 @@ import { ClerkProvider } from '@clerk/nextjs'
 import Header from '~/components/custom/header'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'green socks',
+  description: 'Created with Monster',
 }
 
 export default function RootLayout({

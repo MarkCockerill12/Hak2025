@@ -7,6 +7,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
+import { cn } from "../../lib/utils"
 
 import { Button } from "../../components/ui/button"
 import {
@@ -52,6 +53,8 @@ const formSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   volunteerLimit: z.number().int().min(0),
+}).refine(data => data.startDate < data.endDate, {
+  message: "End date must be after start date",
 })
 
 export function AddEventDialog() {
@@ -196,19 +199,16 @@ export function AddEventDialog() {
                     <FormLabel>Start Date & Time</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start text-left font-normal"
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? (
-                              format(field.value, "PPP p")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                          </Button>
-                        </FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[200px] justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
@@ -217,19 +217,6 @@ export function AddEventDialog() {
                           onSelect={field.onChange}
                           initialFocus
                         />
-                        <div className="p-3 border-t">
-                          <Input
-                            type="time"
-                            onChange={(e) => {
-                              const [hours, minutes] = e.target.value.split(':');
-                              const newDate = new Date(field.value);
-                              newDate.setHours(parseInt(hours!, 10));
-                              newDate.setMinutes(parseInt(minutes!, 10));
-                              field.onChange(newDate);
-                            }}
-                            defaultValue={format(field.value, "HH:mm")}
-                          />
-                        </div>
                       </PopoverContent>
                     </Popover>
                     <FormMessage />
@@ -245,19 +232,16 @@ export function AddEventDialog() {
                     <FormLabel>End Date & Time</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start text-left font-normal"
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {field.value ? (
-                              format(field.value, "PPP p")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                          </Button>
-                        </FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[200px] justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                        </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
@@ -266,19 +250,6 @@ export function AddEventDialog() {
                           onSelect={field.onChange}
                           initialFocus
                         />
-                        <div className="p-3 border-t">
-                          <Input
-                            type="time"
-                            onChange={(e) => {
-                              const [hours, minutes] = e.target.value.split(':');
-                              const newDate = new Date(field.value);
-                              newDate.setHours(parseInt(hours!, 10));
-                              newDate.setMinutes(parseInt(minutes!, 10));
-                              field.onChange(newDate);
-                            }}
-                            defaultValue={format(field.value, "HH:mm")}
-                          />
-                        </div>
                       </PopoverContent>
                     </Popover>
                     <FormMessage />
