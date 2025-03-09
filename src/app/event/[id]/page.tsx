@@ -24,9 +24,11 @@ type Volunteer = {
   joinedAt: Date;
 };
 
-export default async function EventPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>
 
-  const { id } = params;
+export default async function EventPage({ params }: { params: Params }) {
+
+  const { id } = await params;
   const client = await clerkClient();
 
   const eventInfo: EventInfo | null = await getEventById(id);
