@@ -143,13 +143,13 @@ function EventCard({ event }: { event: Event }) {
             View Details
           </Button>
         </Link>
-        <Link href={`/events/${event.id}/chat`}>
+        <Link href={`/events/${event.id}`}>
           <Button variant="ghost" size="sm" className="flex items-center gap-1">
             <MessageCircle className="h-4 w-4" />
             <span>Chat</span>
           </Button>
         </Link>
-        <Link href={`/events/${event.id}/register`}>
+        <Link href={`/events/${event.id}`}>
           <Button variant="default" size="sm" className="bg-green-600 hover:bg-green-700">
             Register
           </Button>

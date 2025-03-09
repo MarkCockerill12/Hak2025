@@ -81,7 +81,7 @@ export const userEvents = createTable(
 export const chats = createTable(
   "chat",
   {
-
+    id: uuid("id").defaultRandom().primaryKey(), // Add this line
     eventId: uuid("event_id")
       .notNull()
       .references(() => events.id, { onDelete: "cascade" }),
@@ -99,11 +99,7 @@ export const chats = createTable(
       () => new Date()
     ),
   },
-  (table) => ({
-    eventIdIdx: index("chat_event_idx").on(table.eventId),
-    userIdIdx: index("chat_user_idx").on(table.userId),
-    dateTimeIdx: index("chat_datetime_idx").on(table.dateTime),
-  })
+  // Rest of the table definition remains the same
 );
 
 

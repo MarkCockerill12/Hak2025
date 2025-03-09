@@ -4,13 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { format, formatDistanceToNow } from "date-fns";
 import Image from "next/image";
-import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { CalendarIcon, MapPinIcon, InfoIcon, Users, SendIcon } from "lucide-react";
 import { Suspense } from "react";
 import { db } from "~/server/db";
 import { chats } from "~/server/db/schema";
 import { revalidatePath } from "next/cache";
-import type { User } from "@clerk/nextjs/server";
+import { ChatComponent } from "./ChatComponent";
 
 type EventInfo = {
   id: string;
@@ -258,50 +258,9 @@ export default async function EventPage({ params }: { params: EventPageProps }) 
               )}
             </div>
 
-            {/* Chat Section - Added below volunteers */}
-            <div className="border-t pt-6 mt-6">
-              <h3 className="text-lg font-semibold mb-4">Discussion</h3>
+            <ChatComponent />
 
-              <div className="bg-white rounded-lg border border-gray-200">
-                <div className="h-[40vh] flex flex-col">
-                  <div className="flex-1 overflow-y-auto p-4">
-                    <Suspense fallback={<div className="py-4 text-center">Loading messages...</div>}>
-                      <ChatMessages eventId={id} />
-                    </Suspense>
-                  </div>
 
-                  {user && (
-                    <div className="border-t border-gray-200 p-4">
-                      <form
-                        onSubmit={async (e) => {
-                          e.preventDefault(); // Prevent the default form submission
-                          const form = e as unknown as HTMLFormElement; // Cast the event to a form element
-                          const formData = new FormData(form); // Get form data
-                          await submitChatMessage(formData); // Call the async function
-                        }}
-                        className="flex gap-2"
-                      >
-                        <input type="hidden" name="eventId" value={id} />
-                        <input type="hidden" name="userId" value={user.id} />
-                        <input
-                          type="text"
-                          name="message"
-                          placeholder="Type your message..."
-                          className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                          required
-                        />
-                        <button
-                          type="submit"
-                          className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
-                        >
-                          <SendIcon className="h-5 w-5" />
-                        </button>
-                      </form>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>

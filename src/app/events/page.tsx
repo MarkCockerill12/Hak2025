@@ -125,7 +125,7 @@ function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <Link href={`/event/${event.id}`}>
+    <Link href={`/events/${event.id}`}>
       <Card>
         <CardHeader>
           <div className="flex justify-between items-start">
@@ -155,7 +155,7 @@ function EventCard({ event }: EventCardProps) {
             <Button variant="outline">View Details</Button>
           </Link>
           <JoinButton eventId={event.id}>Join</JoinButton>
-          <Link href={`/events/${event.id}/chat`}>
+          <Link href={`/events/${event.id}`}>
             <Button variant="ghost" size="icon" aria-label="Chat about this event">
               <MessageCircle className="h-4 w-4" />
             </Button>
