@@ -115,40 +115,42 @@ function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle>{event.name}</CardTitle>
-          <Badge variant={getBadgeVariant(event.category)}>
-            {event.category}
-          </Badge>
-        </div>
-        <CardDescription>{event.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          <div className="flex items-center">
-            <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">
-              {formatDateTime(event.startDate, event.endDate)}
-            </span>
+    <Link href={`/event/${event.id}`}>
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <CardTitle>{event.name}</CardTitle>
+            <Badge variant={getBadgeVariant(event.category)}>
+              {event.category}
+            </Badge>
           </div>
-          <div className="flex items-center">
-            <MapIcon className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">{event.location}</span>
+          <CardDescription>{event.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+              <span className="text-sm">
+                {formatDateTime(event.startDate, event.endDate)}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <MapIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+              <span className="text-sm">{event.location}</span>
+            </div>
           </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Link href={`/events/${event.id}`}>
-          <Button variant="outline">View Details</Button>
-        </Link>
-        <Link href={`/events/${event.id}/chat`}>
-          <Button variant="ghost" size="icon" aria-label="Chat about this event">
-            <MessageCircle className="h-4 w-4" />
-          </Button>
-        </Link>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Link href={`/events/${event.id}`}>
+            <Button variant="outline">View Details</Button>
+          </Link>
+          <Link href={`/events/${event.id}/chat`}>
+            <Button variant="ghost" size="icon" aria-label="Chat about this event">
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+          </Link>
+        </CardFooter>
+      </Card>
+    </Link>
   )
 }
