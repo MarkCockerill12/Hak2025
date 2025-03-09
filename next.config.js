@@ -10,7 +10,7 @@ const config = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'placehold.co',
+        hostname: '',
         port: '',
         pathname: '/**',
         search: '',

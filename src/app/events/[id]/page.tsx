@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "~/components/ui/card";
-import { getEventById, getEventVolunteers, getEventChats } from "~/server/db/select";
+import { getEventById, getEventVolunteers, getEventChats, getUserEvents } from "~/server/db/select";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { format, formatDistanceToNow } from "date-fns";
@@ -11,6 +11,8 @@ import { db } from "~/server/db";
 import { chats } from "~/server/db/schema";
 import { revalidatePath } from "next/cache";
 import { ChatComponent } from "./ChatComponent";
+import { Button } from "~/components/ui/button";
+import { JoinButton } from "../joinButton";
 
 type EventInfo = {
   id: string;
@@ -151,8 +153,14 @@ async function submitChatMessage(formData: FormData): Promise<{ success?: boolea
 }
 
 export default async function EventPage({ params }: { params: EventPageProps }) {
+
   const { id } = await params;
   const user = await currentUser();
+  const userId = user?.id;
+  const userEvents = await getUserEvents(userId!)
+
+  // Create a Set of event IDs that the user has already joined for efficient lookup
+  const userEventIds = new Set(userEvents.map(event => event.id));
 
   try {
     const client = await clerkClient();
@@ -184,24 +192,20 @@ export default async function EventPage({ params }: { params: EventPageProps }) 
     return (
       <div className="container py-10 max-w-4xl mx-auto">
         <Card className="shadow-lg border-0 overflow-hidden">
-          {eventInfo.photo && (
-            <div className="relative w-full h-64">
-              <Image
-                src={eventInfo.photo}
-                alt={eventInfo.name}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          )}
 
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-2xl font-bold">{eventInfo.name}</CardTitle>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                {eventInfo.category}
-              </Badge>
+              <div className="flex flex-col justify-between">
+                <Badge variant="outline" className="mb-4 bg-green-50 text-green-700 border-green-200">
+                  {eventInfo.category}
+                </Badge>
+                {userEventIds.has(eventInfo.id) ? (
+                  <Button variant="outline" disabled>Joined</Button>
+                ) : (
+                  <JoinButton eventId={eventInfo.id}>Join</JoinButton>
+                )}
+              </div>
             </div>
           </CardHeader>
 

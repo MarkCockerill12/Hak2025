@@ -93,15 +93,6 @@ export async function UpcomingEvents() {
 function EventCard({ event }: { event: Event }) {
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
-      {event.photo && (
-        <div className="relative h-48 w-full overflow-hidden">
-          <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-            {/* In production, replace with actual Image component with src from event.photo */}
-            <div className="text-gray-400">Event Image</div>
-          </div>
-          <Badge className="absolute top-3 right-3 bg-green-600">{event.category}</Badge>
-        </div>
-      )}
 
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2 text-sm text-green-600 mb-1">

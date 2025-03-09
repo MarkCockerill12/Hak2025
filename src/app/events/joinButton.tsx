@@ -8,7 +8,7 @@ import { type ReactNode } from "react";
 // Updated to accept children prop
 export function JoinButton({
   eventId,
-  children
+  children,
 }: {
   eventId: string | undefined,
   children?: ReactNode
