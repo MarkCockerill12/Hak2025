@@ -5,17 +5,27 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CalendarIcon, MapIcon, MessageCircle } from "lucide-react"
 import { Badge } from "../../components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
-import { searchEvents } from "../../server/db/select"
+import { searchEvents, getUserEvents } from "../../server/db/select"
 import { type Event } from "../../server/db/schema"
-
-
+import { JoinButton } from "./joinButton"
+import { auth } from "@clerk/nextjs/server"
 export default async function EventsPage() {
-  // Fetch all events with volunteer count
-  const events = await searchEvents({
+  // Fetch all events with volunteer count 
+  const { userId } = await auth();
+  const userEvents = await getUserEvents(userId!)
+  const allEvents = await searchEvents({
     includeVolunteerCount: true,
     orderBy: 'startDate',
     orderDirection: 'asc'
   });
+
+  // Create a Set of event IDs that the user has already joined for efficient lookup
+  const userEventIds = new Set(userEvents.map(event => event.id));
+
+  // Filter out events the user has already joined
+  const events = allEvents.filter(event => !userEventIds.has(event.id));
+
+
 
   return (
     <div className="container py-10">
@@ -143,6 +153,7 @@ function EventCard({ event }: EventCardProps) {
         <Link href={`/events/${event.id}`}>
           <Button variant="outline">View Details</Button>
         </Link>
+        <JoinButton eventId={event.id}>Join</JoinButton>
         <Link href={`/events/${event.id}/chat`}>
           <Button variant="ghost" size="icon" aria-label="Chat about this event">
             <MessageCircle className="h-4 w-4" />
@@ -151,4 +162,10 @@ function EventCard({ event }: EventCardProps) {
       </CardFooter>
     </Card>
   )
+
+
+
+
+
+
 }
