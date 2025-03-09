@@ -149,20 +149,20 @@ function EventCard({ event }: EventCardProps) {
               <span className="text-sm">{event.location}</span>
             </div>
           </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Link href={`/events/${event.id}`}>
-          <Button variant="outline">View Details</Button>
-        </Link>
-        <JoinButton eventId={event.id}>Join</JoinButton>
-        <Link href={`/events/${event.id}/chat`}>
-          <Button variant="ghost" size="icon" aria-label="Chat about this event">
-            <MessageCircle className="h-4 w-4" />
-          </Button>
-        </Link>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Link href={`/events/${event.id}`}>
+            <Button variant="outline">View Details</Button>
+          </Link>
+          <JoinButton eventId={event.id}>Join</JoinButton>
+          <Link href={`/events/${event.id}/chat`}>
+            <Button variant="ghost" size="icon" aria-label="Chat about this event">
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+          </Link>
+        </CardFooter>
+      </Card>
+    </Link>
   )
 
 
