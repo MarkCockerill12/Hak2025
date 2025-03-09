@@ -23,7 +23,7 @@ export default async function EventsPage() {
   const userEventIds = new Set(userEvents.map(event => event.id));
 
   // Filter out events the user has already joined
-  const events = allEvents.filter(event => !userEventIds.has(event.id));
+  const events = allEvents;
 
 
 
@@ -52,7 +52,7 @@ export default async function EventsPage() {
         <TabsContent value="all" className="mt-6">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {events.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <EventCard key={event.id} event={event} userEventIds={userEventIds} />
             ))}
           </div>
         </TabsContent>
@@ -61,7 +61,7 @@ export default async function EventsPage() {
             {events
               .filter((event) => event.category === "outdoor")
               .map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard key={event.id} event={event} userEventIds={userEventIds} />
               ))}
           </div>
         </TabsContent>
@@ -70,7 +70,7 @@ export default async function EventsPage() {
             {events
               .filter((event) => event.category === "workshop")
               .map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard key={event.id} event={event} userEventIds={userEventIds} />
               ))}
           </div>
         </TabsContent>
@@ -79,7 +79,7 @@ export default async function EventsPage() {
             {events
               .filter((event) => event.category === "gardening")
               .map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard key={event.id} event={event} userEventIds={userEventIds} />
               ))}
           </div>
         </TabsContent>
@@ -90,9 +90,10 @@ export default async function EventsPage() {
 
 interface EventCardProps {
   event: Event
+  userEventIds: Set<string>
 }
 
-function EventCard({ event }: EventCardProps) {
+function EventCard({ event, userEventIds }: EventCardProps) {
   const getBadgeVariant = (category: Event["category"]) => {
     switch (category) {
       case "outdoor":
@@ -154,7 +155,11 @@ function EventCard({ event }: EventCardProps) {
           <Link href={`/events/${event.id}`}>
             <Button variant="outline">View Details</Button>
           </Link>
-          <JoinButton eventId={event.id}>Join</JoinButton>
+          {userEventIds.has(event.id!) ? (
+            <Button variant="outline" disabled>Joined</Button>
+          ) : (
+            <JoinButton eventId={event.id}>Join</JoinButton>
+          )}
           <Link href={`/events/${event.id}`}>
             <Button variant="ghost" size="icon" aria-label="Chat about this event">
               <MessageCircle className="h-4 w-4" />

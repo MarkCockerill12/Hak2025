@@ -53,6 +53,12 @@ const yearlyData = {
   2024: { children: null, volunteers: null, programs: null, areas: null },
 };
 
+const cardVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  hover: { y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }
+};
+
 export function Impact() {
   const [activeView, setActiveView] = useState("current");
   const [selectedYear, setSelectedYear] = useState("2023");
@@ -82,13 +88,17 @@ export function Impact() {
               {impactData.map((item) => (
                 <motion.div
                   key={item.category}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  initial="initial"
+                  animate="animate"
+                  whileHover="hover"
+                  variants={cardVariants}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="relative"
                   onMouseEnter={() => setHoveredCard(item.category)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
-                  <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-lg">
-                    <CardHeader className={`flex flex-row items-center justify-between pb-2 ${hoveredCard === item.category ? 'bg-slate-50' : ''}`}>
+                  <Card className="h-full overflow-hidden transition-all duration-300">
+                    <CardHeader className={`flex flex-row items-center justify-between pb-2 ${hoveredCard === item.category ? 'bg-slate-50' : ''} transition-all duration-300`}>
                       <CardTitle className="text-lg font-semibold">{item.category}</CardTitle>
                       <item.icon className={`h-5 w-5 ${item.color}`} />
                     </CardHeader>
@@ -109,6 +119,7 @@ export function Impact() {
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, ease: "easeOut" }}
                           className="mt-4"
                         >
                           <Button variant="outline" size="sm" className="w-full">
@@ -126,8 +137,9 @@ export function Impact() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <motion.div
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial="initial"
+                whileInView="animate"
+                variants={cardVariants}
                 transition={{ duration: 0.5 }}
                 className="col-span-1 lg:col-span-2"
               >
@@ -156,8 +168,9 @@ export function Impact() {
               </motion.div>
 
               <motion.div
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial="initial"
+                whileInView="animate"
+                variants={cardVariants}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <Card className="h-full">
@@ -207,34 +220,43 @@ export function Impact() {
                     const isProjected = selectedYear === "2024";
 
                     return (
-                      <Card key={item.category} className={isProjected ? "border-dashed" : ""}>
-                        <CardHeader className="pb-2">
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="text-base">{item.category}</CardTitle>
-                            <item.icon className={`h-4 w-4 ${item.color}`} />
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-3xl font-bold">
-                            {isProjected ? '~' : ''}
-                            {value !== null ? (
-                              <Counter end={isProjected ? item.goal : value} />
-                            ) : (
-                              <span className="text-xl text-gray-400">Coming soon</span>
-                            )}
-                          </div>
-                          <div className="mt-2">
-                            {!isProjected && value !== null && (
-                              <Progress value={(value / item.goal) * 100} className="h-2" />
-                            )}
-                            {isProjected && (
-                              <Progress value={100} className="h-2 bg-blue-100">
-                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: '100%' }} />
-                              </Progress>
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <motion.div
+                        key={item.category}
+                        initial="initial"
+                        animate="animate"
+                        whileHover="hover"
+                        variants={cardVariants}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Card className={isProjected ? "border-dashed" : ""}>
+                          <CardHeader className="pb-2">
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="text-base">{item.category}</CardTitle>
+                              <item.icon className={`h-4 w-4 ${item.color}`} />
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="text-3xl font-bold">
+                              {isProjected ? '~' : ''}
+                              {value !== null ? (
+                                <Counter end={isProjected ? item.goal : value} />
+                              ) : (
+                                <span className="text-xl text-gray-400">Coming soon</span>
+                              )}
+                            </div>
+                            <div className="mt-2">
+                              {!isProjected && value !== null && (
+                                <Progress value={(value / item.goal) * 100} className="h-2" />
+                              )}
+                              {isProjected && (
+                                <Progress value={100} className="h-2 bg-blue-100">
+                                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: '100%' }} />
+                                </Progress>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
                     );
                   })}
                 </div>
