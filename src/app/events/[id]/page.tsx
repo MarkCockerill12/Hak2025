@@ -31,11 +31,7 @@ type Volunteer = {
   joinedAt: Date;
 };
 
-type EventPageProps = {
-  params: {
-    id: string;
-  };
-};
+type EventPageProps = Promise<{ id: string }>;
 
 // Interface for simplified user data
 interface UserData {
@@ -105,8 +101,8 @@ async function ChatMessages({ eventId }: { eventId: string }) {
           >
             <div
               className={`max-w-[75%] rounded-lg px-4 py-2 ${isCurrentUser
-                  ? 'bg-green-100 text-green-800 rounded-br-none'
-                  : 'bg-gray-100 text-gray-800 rounded-bl-none'
+                ? 'bg-green-100 text-green-800 rounded-br-none'
+                : 'bg-gray-100 text-gray-800 rounded-bl-none'
                 }`}
             >
               <div className="flex items-center gap-1 mb-1">
@@ -154,8 +150,8 @@ async function submitChatMessage(formData: FormData): Promise<{ success?: boolea
   }
 }
 
-export default async function EventPage({ params }: EventPageProps) {
-  const { id } = params;
+export default async function EventPage({ params }: { params: EventPageProps }) {
+  const { id } = await params;
   const user = await currentUser();
 
   try {
@@ -276,7 +272,15 @@ export default async function EventPage({ params }: EventPageProps) {
 
                   {user && (
                     <div className="border-t border-gray-200 p-4">
-                      <form action={submitChatMessage} className="flex gap-2">
+                      <form
+                        onSubmit={async (e) => {
+                          e.preventDefault(); // Prevent the default form submission
+                          const form = e as unknown as HTMLFormElement; // Cast the event to a form element
+                          const formData = new FormData(form); // Get form data
+                          await submitChatMessage(formData); // Call the async function
+                        }}
+                        className="flex gap-2"
+                      >
                         <input type="hidden" name="eventId" value={id} />
                         <input type="hidden" name="userId" value={user.id} />
                         <input
