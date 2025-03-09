@@ -1,18 +1,18 @@
 // src/server/db/search.ts
-import { 
-  and, 
-  asc, 
-  between, 
-  count, 
-  desc, 
-  eq, 
-  getTableColumns, 
-  gt, 
-  gte, 
-  ilike, 
-  lt, 
-  lte, 
-  sql 
+import {
+  and,
+  asc,
+  between,
+  count,
+  desc,
+  eq,
+  getTableColumns,
+  gt,
+  gte,
+  ilike,
+  lt,
+  lte,
+  sql
 } from 'drizzle-orm';
 import { db } from './index';
 import { events, users, userEvents, chats } from './schema';
@@ -57,24 +57,24 @@ export async function getEventById(id: string, includeVolunteerCount = false) {
       .leftJoin(userEvents, eq(events.id, userEvents.eventId))
       .where(eq(events.id, id))
       .groupBy(events.id);
-    
+
     return result[0] || null;
   } else {
     const result = await db
       .select()
       .from(events)
       .where(eq(events.id, id));
-    
+
     return result[0] || null;
   }
 }
 
 export async function searchEvents(params: EventSearchParams = {}) {
-  const { 
-    page = 1, 
-    pageSize = 10, 
-    name, 
-    fromDate, 
+  const {
+    page = 1,
+    pageSize = 10,
+    name,
+    fromDate,
     toDate,
     includeVolunteerCount = false,
     orderBy = 'startDate',
@@ -83,11 +83,11 @@ export async function searchEvents(params: EventSearchParams = {}) {
 
   // Build where conditions
   const whereConditions = [];
-  
+
   if (name) {
     whereConditions.push(ilike(events.name, `%${name}%`));
   }
-  
+
   if (fromDate && toDate) {
     whereConditions.push(
       and(
@@ -107,13 +107,13 @@ export async function searchEvents(params: EventSearchParams = {}) {
     orderByFn = orderDirection === 'asc' ? asc(events.name) : desc(events.name);
   } else if (orderBy === 'volunteerCount' && includeVolunteerCount) {
     // Only can order by volunteer count if we're including it
-    orderByFn = orderDirection === 'asc' 
-      ? asc(sql`volunteer_count`) 
+    orderByFn = orderDirection === 'asc'
+      ? asc(sql`volunteer_count`)
       : desc(sql`volunteer_count`);
   } else {
     // Default to startDate
-    orderByFn = orderDirection === 'asc' 
-      ? asc(events.startDate) 
+    orderByFn = orderDirection === 'asc'
+      ? asc(events.startDate)
       : desc(events.startDate);
   }
 
@@ -175,16 +175,16 @@ export async function getEventVolunteers(
   eventId: string,
   params: VolunteerSearchParams = {}
 ) {
-  const { 
-    page = 1, 
+  const {
+    page = 1,
     pageSize = 10,
     orderBy = 'createdAt',
-    orderDirection = 'asc' 
+    orderDirection = 'asc'
   } = params;
 
   // Determine sort order
-  const orderByFn = orderDirection === 'asc' 
-    ? asc(userEvents.createdAt) 
+  const orderByFn = orderDirection === 'asc'
+    ? asc(userEvents.createdAt)
     : desc(userEvents.createdAt);
 
   return db
@@ -205,8 +205,8 @@ export async function getEventChats(
   eventId: string,
   params: ChatSearchParams = {}
 ) {
-  const { 
-    page = 1, 
+  const {
+    page = 1,
     pageSize = 20,
     fromDate,
     toDate,
@@ -217,7 +217,7 @@ export async function getEventChats(
 
   // Build where conditions
   const whereConditions = [eq(chats.eventId, eventId)];
-  
+
   if (fromDate && toDate) {
     whereConditions.push(
       between(chats.dateTime, fromDate, toDate)
@@ -233,8 +233,8 @@ export async function getEventChats(
   }
 
   // Determine order by
-  const orderByFn = orderDirection === 'asc' 
-    ? asc(chats.dateTime) 
+  const orderByFn = orderDirection === 'asc'
+    ? asc(chats.dateTime)
     : desc(chats.dateTime);
 
   return db
@@ -252,8 +252,8 @@ export async function getUserChats(
   userId: string,
   params: ChatSearchParams = {}
 ) {
-  const { 
-    page = 1, 
+  const {
+    page = 1,
     pageSize = 20,
     fromDate,
     toDate,
@@ -264,7 +264,7 @@ export async function getUserChats(
 
   // Build where conditions
   const whereConditions = [eq(chats.userId, userId)];
-  
+
   if (fromDate && toDate) {
     whereConditions.push(
       between(chats.dateTime, fromDate, toDate)
@@ -280,8 +280,8 @@ export async function getUserChats(
   }
 
   // Determine order by
-  const orderByFn = orderDirection === 'asc' 
-    ? asc(chats.dateTime) 
+  const orderByFn = orderDirection === 'asc'
+    ? asc(chats.dateTime)
     : desc(chats.dateTime);
 
   return db
