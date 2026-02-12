@@ -6,17 +6,16 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '',
-        port: '',
-        pathname: '/**',
-        search: '',
-      },
-    ],
-  },
+  // Add remote image patterns here when needed, e.g.:
+  // images: {
+  //   remotePatterns: [
+  //     {
+  //       protocol: 'https',
+  //       hostname: 'example.com',
+  //       pathname: '/**',
+  //     },
+  //   ],
+  // },
 };
 
 export default config;
